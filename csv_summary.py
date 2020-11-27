@@ -165,7 +165,7 @@ if __name__ == "__main__":
     cs = "Example.csv"
     S = Summary(cs,js)
     S.getGroups()
-
+    print("test!")
     # for i in S.getGroups():
     #     print (str(i))
 
