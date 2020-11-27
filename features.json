@@ -1,0 +1,9 @@
+{
+"groupby": "Color",
+"features":[
+{"Brand":{"type":"categorical", "aggregate":"mode"}},
+{"Kilometers":{"type":"numerical", "aggregate":"sum"}},
+{"Model":{"type":"categorical", "aggregate":"unique"}},
+{"Comment": {"type":"textual"}}
+] 
+}
