@@ -166,6 +166,7 @@ if __name__ == "__main__":
     S = Summary(cs,js)
     S.getGroups()
     print("test")
+    print("test")
     # for i in S.getGroups():
     #     print (str(i))
 
