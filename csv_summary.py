@@ -5,23 +5,32 @@ class Summary:
     c_file = None
     j_file = None
     group_by = None
+    groups_list = None
     def __init__(self,  csv_file ,json_file ):
         self.c_file = csv_file
         self.j_file = json_file
+        self.groups_list = list()
         with open(json_file) as jsonfile:
             data = json.load(jsonfile)
             self.group_by = data["groupby"]
+    def __iter__(self):
+        return iter(self.groups_list)
+
+    def __getitem__(self, item):
+        for i in self.groups_list:
+            if(i.name == item):
+                return i
 
     def getGroups(self):
         """
         method which will return a list of all groups created.
         """
         groups_names = set()
-        groups_list = list()
         with open(self.c_file,'r')as file:
             csv_dict = csv.DictReader(file)
             for row in csv_dict:
                 groups_names.add(dict(row)[self.group_by])
+            groups_names = sorted(groups_names)
             for i in groups_names:
                 tmp_data =[]
                 with open(self.c_file, 'r')as file:
@@ -29,13 +38,10 @@ class Summary:
                     for row in csv_dict:
                         if(i==row[self.group_by]):
                             tmp_data.append(dict(row))
-                    tmp_group = Group(i,tmp_data,self.getSpec())
-                    groups_list.append(tmp_group)
-                    tmp_group.print_sum()
-
-        for i in groups_list:
-            i.print_sum()
-
+                    self.groups_list.append(Group(i,tmp_data,self.getSpec()))
+                    # print(self.getSpec())
+            # for i in self.groups_list:
+            #     print(i)
 
     def getSpec(self):
         '''
@@ -53,20 +59,22 @@ class Summary:
 
 class Group:
     name = None
-    finalSummary = {}
+    finalSummary = None
     data = None
     agg = None
 
     def __str__(self):
         tmp = "{} - ".format(self.name)
-        # print(self.name , self.finalSummary)
-        # for k,v in self.finalSummary:
-        #     tmp +="{}({}):{}, ".format(k,v,self.finalSummary[k])
+        for k,v in self.finalSummary.items():
+            tmp +="{}({}):{}, ".format(k,self.agg[k],self.finalSummary[k])
+            tmp = tmp[:-2]
         return tmp
+
     def __init__(self,name,data,aggList):
         self.name=name
         self.data=data
         self.agg=aggList
+        self.finalSummary = {}
         for k,v in aggList.items():
             if(v=="mode"):
                 self.finalSummary[k]=self.mode(k)
@@ -87,10 +95,23 @@ class Group:
             elif (v=="sum"):
                 self.finalSummary[k]=self.sum(k)
 
+    def __iter__(self):
+        return iter(self.finalSummary.items())
+
+    def __getitem__(self, item):
+        ls = list(self.finalSummary)
+        ls.sort()
+        for k,v in self.finalSummary.items():
+            if(type(item) == str and k == item):
+                return v
+            elif(type(item) == int):
+                return ls[item]
+
 
 
     def print_sum(self):
         print(self.name , self.finalSummary)
+
     def mode (self,feature):
         count = list()
         for line in self.data:
@@ -165,8 +186,15 @@ if __name__ == "__main__":
     cs = "Example.csv"
     S = Summary(cs,js)
     S.getGroups()
-    print("test")
-    print("test")
+    for i in S:
+        print(i[0])
+    # iterator = iter(S["Blue"])
+    # print(iterator)
+    # print(next(iterator))
+    # print(next(iterator))
+    # print(next(iterator))
+    # print(S["Blue"]["Model"])
+    # print(S["Blue"])
     # for i in S.getGroups():
     #     print (str(i))
 
