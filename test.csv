@@ -1,0 +1,4 @@
+Brand(groupby),Brand(mode),Kilometers(max),Model(unique)
+Ford,Ford,55000,2
+Mazda,Mazda,100000,2
+Nissan,Nissan,50000,1

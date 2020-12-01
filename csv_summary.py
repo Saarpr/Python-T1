@@ -9,13 +9,27 @@ class Summary:
     groups_list = None
 
     def __init__(self, csv_file, json_file):
+        '''
+        constructor of "Summary" object, which receiving csv file name and json file name.
+        :param csv_file:
+        :param json_file:
+        '''
         self.c_file = csv_file
         self.j_file = json_file
         self.groups_list = list()
-        with open(json_file) as jsonfile:
-            data = json.load(jsonfile)
-            self.group_by = data["groupby"]
-        self.getGroups()
+        try:
+            file = open(self.c_file, 'r')
+        except :
+            print("Could not open CSV file!")
+        try:
+            with open(json_file) as jsonfile:
+                data = json.load(jsonfile)
+                self.group_by = data["groupby"]
+            self.getGroups()
+        except :
+            print("Could not open json file!")
+
+
 
     def __iter__(self):
         return iter(self.groups_list)
@@ -69,6 +83,8 @@ class Summary:
         return tmp_dict
 
     def saveSummary(self, filename, deli=','):
+        '''Save method, which receiving file name and delimiter (A single non-alphanumeric and non-quotation character (i.e. not a-z, 0-9, “, ‘))
+        and save the Summary object as CSV file.'''
         featureStr = self.group_by + "(groupby)"
         firstLine = list()
         firstLine.append(featureStr)
@@ -110,6 +126,12 @@ class Group:
         return tmp
 
     def __init__(self, name, data, aggList):
+        '''
+        Constructor of "Group" object, which receiving group name, raw data of the group, and aggregation requirements
+        :param name:
+        :param data:
+        :param aggList:
+        '''
         self.name = name
         self.data = data
         self.agg = aggList
@@ -117,22 +139,40 @@ class Group:
         for k, v in aggList.items():
             if (v == "mode"):
                 self.finalSummary[k] = self.mode(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "N/A"
             elif (v == "union"):
                 self.finalSummary[k] = self.union(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "N/A"
             elif (v == "unique"):
                 self.finalSummary[k] = self.unique(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "0"
             elif (v == "count"):
                 self.finalSummary[k] = self.count(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "0"
             elif (v == "min"):
                 self.finalSummary[k] = self.min(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "0"
             elif (v == "max"):
                 self.finalSummary[k] = self.max(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "0"
             elif (v == "median"):
                 self.finalSummary[k] = self.median(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "0"
             elif (v == "mean"):
                 self.finalSummary[k] = self.mean(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "0"
             elif (v == "sum"):
                 self.finalSummary[k] = self.sum(k)
+                if(self.finalSummary[k] ==''):
+                    self.finalSummary[k] = "0"
 
     def __iter__(self):
         return iter(self.finalSummary.items())
@@ -150,24 +190,28 @@ class Group:
         print(self.name, self.finalSummary)
 
     def mode(self, feature):
+        '''value which appears most (ties broken by first in alphabetical order)'''
         count = list()
         for line in self.data:
             count.append(line[feature])
         return max(set(count), key=count.count)
 
     def union(self, feature):
+        ''' string containing all unique entities in category separated by semicolon (;)'''
         union = set()
         for line in self.data:
             union.add(line[feature])
         return ";".join(union)
 
     def unique(self, feature):
+        '''number of unique entities in category'''
         unique = set()
         for line in self.data:
             unique.add(line[feature])
         return len(unique)
 
     def count(self, feature):
+        ''' total number of entities in category'''
         x = 0
         for line in self.data:
             if (line[feature]):
@@ -175,18 +219,21 @@ class Group:
         return x
 
     def min(self, feature):
+        '''minimum value in category'''
         mini = list()
         for line in self.data:
             mini.append(int(line[feature]))
         return min(mini)
 
     def max(self, feature):
+        '''maximum value in category'''
         maxi = list()
         for line in self.data:
             maxi.append(int(line[feature]))
         return max(maxi)
 
     def median(self, feature):
+        '''median value in category'''
         n_num = []
         for line in self.data:
             n_num.append(int(line[feature]))
@@ -202,6 +249,7 @@ class Group:
         return (str(median))
 
     def mean(self, feature):
+        '''mean of values in category'''
         n_num = []
         for line in self.data:
             n_num.append(int(line[feature]))
@@ -211,6 +259,7 @@ class Group:
         return str(format(mean, ".2f"))
 
     def sum(self, feature):
+        '''sum of values in category'''
         x = 0
         for line in self.data:
             if (line[feature]):
@@ -229,9 +278,8 @@ if __name__ == "__main__":
     # S.saveSummary()
     # for i in S.groups_list:
     #     print(i)
-    # S.saveSummary("s", '6')
-    # iterator = iter(S["Blue"])
-    # print(iterator)
+    S.saveSummary("test", '6')
+
     # print(next(iterator))
     # print(next(iterator))
     # print(next(iterator))
