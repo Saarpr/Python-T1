@@ -3,7 +3,8 @@
 "features":[
 {"Brand":{"type":"categorical", "aggregate":"mode"}},
 {"Kilometers":{"type":"numerical", "aggregate":"max"}},
-{"Model":{"type":"categorical", "aggregate":"unique"}},
+{"Model":{"type":"categorical", "aggregate":"mode"}},
+{"Color":{"type":"categorical", "aggregate":"mode"}},
 {"Comment": {"type":"textual"}}
 ]
 }

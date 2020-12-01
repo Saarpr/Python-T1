@@ -21,6 +21,7 @@ class Summary:
             file = open(self.c_file, 'r')
         except :
             print("Could not open CSV file!")
+            return None
         try:
             with open(json_file) as jsonfile:
                 data = json.load(jsonfile)
@@ -28,6 +29,8 @@ class Summary:
             self.getGroups()
         except :
             print("Could not open json file!")
+            return None
+
 
 
 
@@ -63,9 +66,7 @@ class Summary:
                         if (i == row[self.group_by]):
                             tmp_data.append(dict(row))
                     self.groups_list.append(Group(i, tmp_data, self.getSpec()))
-                    # print(self.getSpec())
-            # for i in self.groups_list:
-            #     print(i)
+
 
     def getSpec(self):
         '''
@@ -98,11 +99,6 @@ class Summary:
             for key, val in i:
                 groupValues.append(val)
             allValues.append(groupValues)
-        # for ls in allValues:
-        #     for v in ls:
-        #         print(v , end = ",")
-        #     print("\n")
-        # print(firstLine)
         if ('a' <= deli <= 'z') or ('A' <= deli <= 'Z') or ('0' <= deli <= '9') or deli == "'" or deli == '"':
             deli = ','
         csvFilename = filename + ".csv"
@@ -278,12 +274,13 @@ if __name__ == "__main__":
     # S.saveSummary()
     # for i in S.groups_list:
     #     print(i)
-    S.saveSummary("test", '6')
+    # S.saveSummary("test", '6')
 
     # print(next(iterator))
     # print(next(iterator))
     # print(next(iterator))
     # print(S["Blue"]["Model"])
-    # print(S["Blue"])
+    # print(S["Ford"])
+    # print(S["Ford"]["Color"])
     # for i in S.getGroups():
     #     print (str(i))

@@ -1,4 +1,4 @@
-Brand(groupby),Brand(mode),Kilometers(max),Model(unique)
-Ford,Ford,55000,2
-Mazda,Mazda,100000,2
-Nissan,Nissan,50000,1
+Brand(groupby),Brand(mode),Kilometers(max),Model(mode),Color(mode)
+Ford,Ford,55000,Focus,Red
+Mazda,Mazda,100000,CX-5,White
+Nissan,Nissan,50000,N/A,White
