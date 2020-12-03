@@ -78,8 +78,7 @@ class Summary:
             data = json.load(jsonfile)
             # print(data["features"])
             for feature in data["features"]:
-                if (list(feature.values())[0]["type"] == "categorical" or list(feature.values())[0][
-                    "type"] == "numerical"):
+                if (list(feature.values())[0]["type"] == "categorical" or list(feature.values())[0]["type"] == "numerical"):
                     tmp_dict[list(feature.keys())[0]] = list(feature.values())[0]["aggregate"]
         return tmp_dict
 
@@ -189,14 +188,20 @@ class Group:
         '''value which appears most (ties broken by first in alphabetical order)'''
         count = list()
         for line in self.data:
-            count.append(line[feature])
+            if (line[feature] == ''):           #####
+                count.append('N/A')             #####
+            else:                               #####
+                count.append(line[feature])
         return max(set(count), key=count.count)
 
     def union(self, feature):
         ''' string containing all unique entities in category separated by semicolon (;)'''
         union = set()
         for line in self.data:
-            union.add(line[feature])
+            if (line[feature] == ''):   #####
+                union.add('N/A')        #####
+            else:                       #####
+                union.add(line[feature])
         return ";".join(union)
 
     def unique(self, feature):
@@ -218,21 +223,30 @@ class Group:
         '''minimum value in category'''
         mini = list()
         for line in self.data:
-            mini.append(int(line[feature]))
+            if(line[feature]==''):              #####
+                mini.append(0)                  #####
+            else:                               #####
+                mini.append(int(line[feature]))
         return min(mini)
 
     def max(self, feature):
         '''maximum value in category'''
         maxi = list()
         for line in self.data:
-            maxi.append(int(line[feature]))
+            if(line[feature]==''):              #####
+                maxi.append(0)                  #####
+            else:                               #####
+                maxi.append(int(line[feature]))
         return max(maxi)
 
     def median(self, feature):
         '''median value in category'''
         n_num = []
         for line in self.data:
-            n_num.append(int(line[feature]))
+            if(line[feature]==''):              #####
+                n_num.append(0)                 #####
+            else:                               #####
+                n_num.append(int(line[feature]))
         n = len(n_num)
         n_num.sort()
 
@@ -248,7 +262,10 @@ class Group:
         '''mean of values in category'''
         n_num = []
         for line in self.data:
-            n_num.append(int(line[feature]))
+            if(line[feature]==''):              #####
+                n_num.append(0)                 #####
+            else:                               #####
+                n_num.append(int(line[feature]))
         n = len(n_num)
         get_sum = sum(n_num)
         mean = get_sum / n
@@ -259,28 +276,30 @@ class Group:
         x = 0
         for line in self.data:
             if (line[feature]):
-                x += int(line[feature])
+                if (line[feature] == ''):   #####
+                    x +=0                   #####
+                else:                       #####
+                    x += int(line[feature])
         return x
 
 
-if __name__ == "__main__":
-    js = "features.json"
-    cs = "Example.csv"
-    S = Summary(cs, js)
-    print(S)
-    # S.getGroups()
-    # print(S.group_by)
-    # print(S.getSpec())
-    # S.saveSummary()
-    # for i in S.groups_list:
-    #     print(i)
-    # S.saveSummary("test", '6')
+# if __name__ == "__main__":
+#     js = "features.json"
+#     cs = "Example.csv"
+#     S = Summary(cs, js)
+#     print(S)
+#     # S.getGroups()
+#     # print(S.group_by)
+#     # print(S.getSpec())
+#     for i in S.groups_list:
+#         print(i)
+#     S.saveSummary("test", ',')
 
     # print(next(iterator))
     # print(next(iterator))
     # print(next(iterator))
-    # print(S["Blue"]["Model"])
     # print(S["Ford"])
-    # print(S["Ford"]["Color"])
+    # print(S["Ford"]["Model"])
+    # print(S["Ford"][-2])
     # for i in S.getGroups():
     #     print (str(i))

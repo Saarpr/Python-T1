@@ -1,10 +1,28 @@
 {
-"groupby": "Brand",
-"features":[
-{"Brand":{"type":"categorical", "aggregate":"mode"}},
-{"Kilometers":{"type":"numerical", "aggregate":"max"}},
-{"Model":{"type":"categorical", "aggregate":"mode"}},
-{"Color":{"type":"categorical", "aggregate":"mode"}},
-{"Comment": {"type":"textual"}}
-]
+  "groupby": "Brand",
+  "features": [
+    {
+      "Color": {
+        "type": "categorical",
+        "aggregate": "mode"
+      }
+    },
+    {
+      "Kilometers": {
+        "type": "numerical",
+        "aggregate": "max"
+      }
+    },
+    {
+      "Model": {
+        "type": "categorical",
+        "aggregate": "unique"
+      }
+    },
+    {
+      "Comment": {
+        "type": "textual"
+      }
+    }
+  ]
 }
