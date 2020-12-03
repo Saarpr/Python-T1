@@ -1,6 +1,7 @@
 # Python-T1
-Python-T1 - 
+
 Scientific Programming with Python - Exercise 1
+
 You are tasked with creating a summary file to spec for a given CSV table file. The CSV file will contain
 columns which will be either categorical, textual, or numerical features. Additionally, you will be given a
 feature spec as a JSON file. The JSON file will define the requested output: there will be one “groupby”
@@ -64,27 +65,4 @@ mean – mean of values in category
 sum – sum of values in category
 mode – value which appears most (ties broken by lowest value)
 count – total number of entities in category
-Example CSV table:
-Brand Color Kilometers Model Comment
-Ford Red 10000 Focus Like new!!!!
-Ford Red 15000 Focus Best Value!!!
-Ford Blue 55000 Explorer Good car.
-Mazda White 100000 Lantis New engine.
-Mazda White 15000 CX-5 Under warranty
-Mazda Gray 15000 CX-5 Under warranty
-Nissan White 50000 Micra Gas efficient!
-Example JSON:
-{
-"groupby": "Brand",
-"features":[
-{"Color":{"type":"categorical", "aggregate":"mode"}},
-{"Kilometers":{"type":"numerical", "aggregate":"max"}},
-{"Model":{"type":"categorical", "aggregate":"unique"}},
-{"Comment": {"type":"textual"}}
-]
-}
-Example result:
-Brand (groupby) Color (mode) Kilometers (max) Model (unique)
-Ford Red 55000 2
-Mazda White 100000 2
-Nissan White 50000 1
+
